@@ -8,7 +8,7 @@ $src="\\wsl.localhost\Debian\home\tonymet\sotion"
 $dest="$HOME\OneDrive\Documents\sotion\"
 Write-EventLog  -LogName Application -Source "Backup-WSL" -EventID 3001 -Message "Starting Backup"
 $t0=(Get-Date)
-robocopy $src $dest /W:1 /R:1 /E /xd node_modules  /NFL /NDL /LOG+:$logfile
+robocopy $src $dest /W:1 /R:0 /E /xd node_modules  /NFL /NDL /LOG+:$logfile
 $exitcoderobo=$LASTEXITCODE
 $t1=(Get-Date)
 $delta =($t1-$t0)

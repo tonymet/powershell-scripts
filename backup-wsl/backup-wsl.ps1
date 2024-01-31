@@ -5,7 +5,7 @@ if ((Get-Item $logfile).length -gt 128000){
     Remove-Item $logfile
 }
 $src="\\wsl.localhost\Debian\home\tonymet\sotion"
-$dest="$HOME\OneDrive\Documents\sotion\"
+$dest=$(Join-Path ${env:OneDrive} "Documents\Sotion")
 Write-EventLog  -LogName Application -Source "Backup-WSL" -EventID 3001 -Message "Starting Backup"
 $t0=(Get-Date)
 robocopy $src $dest /W:1 /R:0 /E /xd node_modules  /NFL /NDL /LOG+:$logfile

@@ -35,7 +35,7 @@ Function Hide-Font {
         return -1
     }
     Write-Verbose "Setting font '$FontName' to 'Hide'"
-    $font.ShellObject.Verbs() | Where-Object Name -like '*hide*' | ForEach-Object { $_.DoIt() }
+    $font.ShellObject.Verbs() | Where-Object Name -eq '&Hide' | ForEach-Object { $_.DoIt() }
     # reload font
     $font = Get-Font $FontName
     if(!$font.hidden){
@@ -60,7 +60,7 @@ Function Show-Font {
     }
 
     Write-Verbose "Setting font '$FontName' to 'Show'"
-    $font.ShellObject.Verbs() | Where-Object Name -like '*show*'  | ForEach-Object { $_.DoIt() }
+    $font.ShellObject.Verbs() | Where-Object Name -eq '&Show'  | ForEach-Object { $_.DoIt() }
     #$showverb.DoIt()
     # reload
     $font = Get-Font $FontName

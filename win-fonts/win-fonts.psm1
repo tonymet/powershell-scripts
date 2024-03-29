@@ -1,22 +1,21 @@
-PrivateData = @{
-    PSData = @{
-        # Tags applied to this module. These help with module discovery in online galleries.
-        Tags = @('.net','acl','active-directory')
-        # A URL to the license for this module.
-        LicenseUri = 'http://www.apache.org/licenses/LICENSE-2.0'
-    }
-}
-#  $FontVerbs = @{
-#     Preview = 'Pre&view'
-#     Print =   '&Print'
-#     Show =    '&Show'
-#     #      'Edit with &Notepad++'
-#     AddToFavorites =   'Add to &Favorites'
-#     Copy =             '&Copy'
-#     Delete =           '&Delete'
-#     Properties =       'P&roperties'
-# }
 Function Get-Font {
+     <#
+        .SYNOPSIS
+            Get Font Object by Name
+
+        .DESCRIPTION
+            Get Font Object by Name
+
+        .EXAMPLE
+            Get-Font
+
+
+        .EXAMPLE
+            Get-Font -Name 'Arial'
+
+        .OUTPUTS
+            [System.Collections.Generic.List[PSCustomObject]]
+    #>
     Param(
         [parameter(Mandatory)]$FontName
     )
@@ -36,6 +35,33 @@ Function Get-Font {
     }
 }
 
+Function Set-FontStatus {
+    <#
+        .SYNOPSIS
+            Set Font "Show" or "Hide" Status Font by Name
+
+        .DESCRIPTION
+            Hide/Show font in Windows Explorer making the font unavailable/available to use in Apps. Font remains installed
+
+        .EXAMPLE
+            Set-FontStatus -Status Hide -Name "Monotype Corsiva Italic"
+            Set-FontStatus -Status Show -Name "Monotype Corsiva Italic"
+
+        .OUTPUTS
+            Use -Verbose for output
+    #>
+    [CmdletBinding(SupportsShouldProcess)]
+    Param(
+        [parameter(Mandatory)]$Status,
+        [string]$Name
+    )
+
+    switch -regex ($Status){
+         "Show" { Show-Font $Name }
+         "Hide" { Hide-Font $Name }
+         default { throw "$Status is not valid"}
+    }
+}
 Function Hide-Font {
     Param(
         [parameter(Mandatory)]$FontName
@@ -86,7 +112,24 @@ Function Show-Font {
     }
 }
 
-Function Search-Font-Status {
+Function Search-FontStatus {
+     <#
+        .SYNOPSIS
+            Search font by status : "Hide" or "Show"
+
+        .DESCRIPTION
+            Search font by status : "Hide" or "Show"
+
+        .EXAMPLE
+            Search-FontStatus -Status "Hide"
+        .EXAMPLE
+            Show All fonts:
+            Search-FontStatus
+        .EXAMPLE
+            Search-FontStatus -Status "Show"
+        .OUTPUTS
+            Use -Verbose for output
+    #>
     Param(
         [string]$Status
     )
@@ -102,7 +145,24 @@ Function Search-Font-Status {
     }
 }
 
-Function Search-Font-Name {
+Function Search-FontName {
+     <#
+        .SYNOPSIS
+            Search font by Name : "Hide" or "Show"
+
+        .DESCRIPTION
+            Search font by status : "Hide" or "Show"
+
+        .EXAMPLE
+            Search-FontStatus -Status "Hide"
+        .EXAMPLE
+            Show All fonts:
+            Search-FontStatus
+        .EXAMPLE
+            Search-FontStatus -Status "Show"
+        .OUTPUTS
+            Use -Verbose for output
+    #>
     Param(
         [string]$Name
     )

@@ -17,10 +17,9 @@
     FormatsToProcess      = @()
     NestedModules         = @()
     FunctionsToExport     = @(
-        'Hide-Font'
-        'Show-Font'
-        'Search-Font-Name'
-        'Search-Font-Status'
+        'Set-FontStatus'
+        'Search-FontName'
+        'Search-FontStatus'
     )
     CmdletsToExport       = @()
     VariablesToExport     = @()

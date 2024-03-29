@@ -1,13 +1,13 @@
- $FontVerbs = @{
-    Preview = 'Pre&view'
-    Print =   '&Print'
-    Show =    '&Show'
-    #      'Edit with &Notepad++'
-    AddToFavorites =   'Add to &Favorites'
-    Copy =             '&Copy'
-    Delete =           '&Delete'
-    Properties =       'P&roperties'
-}
+#  $FontVerbs = @{
+#     Preview = 'Pre&view'
+#     Print =   '&Print'
+#     Show =    '&Show'
+#     #      'Edit with &Notepad++'
+#     AddToFavorites =   'Add to &Favorites'
+#     Copy =             '&Copy'
+#     Delete =           '&Delete'
+#     Properties =       'P&roperties'
+# }
 Function Get-Font {
     Param(
         [parameter(Mandatory)]$FontName
@@ -78,7 +78,7 @@ Function Show-Font {
     }
 }
 
-Function List-Font {
+Function Search-Font-Status {
     Param(
         [string]$Status
     )
@@ -89,16 +89,16 @@ Function List-Font {
             $n.Items() | ForEach-Object {[PSCustomObject]@{ Name=$_.Name ; Path=$_.Path; Hidden= $n.GetDetailsOf($_,2); FontObject=$_ } } | Where-Object {$_.Hidden -eq $Status}
         }
         Default {
-            $n.Items() | ForEach-Object {[PSCustomObject]@{ Name=$_.Name ; Path=$_.Path; Hidden= $n.GetDetailsOf($_,2); FontObject=$_} } 
+            $n.Items() | ForEach-Object {[PSCustomObject]@{ Name=$_.Name ; Path=$_.Path; Hidden= $n.GetDetailsOf($_,2); FontObject=$_} }
         }
     }
 }
 
-Function Find-Font {
+Function Search-Font-Name {
     Param(
         [string]$Name
     )
     $sh = New-Object -ComObject "Shell.Application"
     $n = $sh.Namespace("C:\Windows\Fonts")
-    $n.Items() | Where-Object {$_.Name -eq $Name } | ForEach-Object {[PSCustomObject]@{ Name=$_.Name ; Path=$_.Path; Hidden= $n.GetDetailsOf($_,2); FontObject=$_} } 
+    $n.Items() | Where-Object {$_.Name -eq $Name } | ForEach-Object {[PSCustomObject]@{ Name=$_.Name ; Path=$_.Path; Hidden= $n.GetDetailsOf($_,2); FontObject=$_} }
 }

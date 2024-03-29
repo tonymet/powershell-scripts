@@ -19,7 +19,6 @@
 		{
             $sh = New-Object -ComObject "Shell.Application"
             $sh.Namespace("C:\Windows\Fonts").ParseName($Name) | ForEach-Object { $_.InvokeVerb("hide") }
-            Start-Sleep -Seconds 10
 		}
 		
 		end

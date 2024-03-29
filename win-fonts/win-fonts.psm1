@@ -1,3 +1,11 @@
+PrivateData = @{
+    PSData = @{
+        # Tags applied to this module. These help with module discovery in online galleries.
+        Tags = @('.net','acl','active-directory')
+        # A URL to the license for this module.
+        LicenseUri = 'http://www.apache.org/licenses/LICENSE-2.0'
+    }
+}
 #  $FontVerbs = @{
 #     Preview = 'Pre&view'
 #     Print =   '&Print'
@@ -102,3 +110,36 @@ Function Search-Font-Name {
     $n = $sh.Namespace("C:\Windows\Fonts")
     $n.Items() | Where-Object {$_.Name -eq $Name } | ForEach-Object {[PSCustomObject]@{ Name=$_.Name ; Path=$_.Path; Hidden= $n.GetDetailsOf($_,2); FontObject=$_} }
 }
+# SIG # Begin signature block
+# MIIFuQYJKoZIhvcNAQcCoIIFqjCCBaYCAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCAG0qP58sWpuOCr
+# Fk1ctVm72gZus9pxyUi3zMAPvNA2WqCCAyIwggMeMIICBqADAgECAhA8Azq0Wr3+
+# pEKieGfMmIkiMA0GCSqGSIb3DQEBCwUAMCcxJTAjBgNVBAMMHFBvd2VyU2hlbGwg
+# Q29kZSBTaWduaW5nIENlcnQwHhcNMjQwMzI5MjE1NTI0WhcNMjUwMzI5MjIxNTI0
+# WjAnMSUwIwYDVQQDDBxQb3dlclNoZWxsIENvZGUgU2lnbmluZyBDZXJ0MIIBIjAN
+# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA22r/jGspQfAjlNK1WG+vzr08YI7J
+# oyY22hYZcgsmKvktxaoY8AARwQK1dTy9lRB3RPG9LARN3D8c/77dJwQV+U7fHQVc
+# Wqi8YMsrXYbr/uYWYRiZXdWjYgOaY+jeCcvytvmPGpkVklp5wf8a6wfaUTJuaRe9
+# MaJR84KoY4LmyMFpuKf1yX/T3W2H2rjCufha/RqR+I2PdV6onB6+1s+coaEJRt/A
+# 4wmzeOBg8xbpIcHRFVwz4JjKPNd62ZdClnGsYepJ1YS+EDmX8nL2Xb1JZ0V+QzTd
+# k5PZLgMLq88A1VAkJrvUOWT8cNddxiKJ9Ca0J+tUgafYpwC52YQaEaAlNQIDAQAB
+# o0YwRDAOBgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUHAwMwHQYDVR0O
+# BBYEFN/W6W2WQ86WApKXJzjgsw14OgpbMA0GCSqGSIb3DQEBCwUAA4IBAQByATpz
+# KPYyk+NSoOesHIX0oD3RYRBpth0A/ASej+R/aY649DeB6/6LvPGY5O2ap0+niA5w
+# lB3HViXCVcDiDSzdzwnqWOeRXBqCRo4vqhspXp/sv1tCKtfN4MMVGGdOOG2NO5Pn
+# MY93j9yX5zwIzXTF17QL01fpVECf5tDCtKZ6iomWzEqlz9Kbh1f1bSNnqzDlEZyp
+# H62dtstbbv/r1qu4+G+Z4NSSs2YtHDWXDTAlg2VC0T3aAo+0f50Chf9zDTC/OUFd
+# 4F7VXvyBow9QJKa5F/aTQW6a7/rJaYDLaB2eKJfN8ML+TtIjI2x4kzPyBaSnnIFz
+# 9hrzdvgl+EGGjcKiMYIB7TCCAekCAQEwOzAnMSUwIwYDVQQDDBxQb3dlclNoZWxs
+# IENvZGUgU2lnbmluZyBDZXJ0AhA8Azq0Wr3+pEKieGfMmIkiMA0GCWCGSAFlAwQC
+# AQUAoIGEMBgGCisGAQQBgjcCAQwxCjAIoAKAAKECgAAwGQYJKoZIhvcNAQkDMQwG
+# CisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEOMAwGCisGAQQBgjcCARUwLwYJKoZI
+# hvcNAQkEMSIEIHP/SOBBJG6iG8DjpxglA+LLBy4NCdKhzubM1TBQS1T5MA0GCSqG
+# SIb3DQEBAQUABIIBAHlyv8C2CXiXW1dMtcAfz992gawAfZZyanG9r0CpFAHHXVCj
+# ICI+d1uFkWUXpueSriQYHSESdkuSV35YJcxK0u0+H92EK8yQlMSc7hoRfd2N8NyO
+# 8ebjAfFwYIqqAT2QdmhrJKs+YcVoBSTmPZSPmMuL/W+gHQoz7UczrxDQHUrALfwP
+# quF2GPUX8/ozb1sqY6T1I+9eldn7WeVOL85q2oqTxJBMJYAFaOXxMzc6Hp/EIOrp
+# Sb0LmBk9pt7uBh5ZbUxfFc6WBzOItqoIhqtFWkKyDxt9S9bm41r/+KpGeXvsKuc8
+# pl6WNhwcdoYJH+Os/yr5qKYPCsmii0plEomPpGc=
+# SIG # End signature block

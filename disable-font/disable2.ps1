@@ -1,3 +1,4 @@
+
 Function Get-Font {
     Param(
         [parameter(Mandatory)]$FontName
@@ -12,6 +13,7 @@ Function Get-Font {
 
     [PSCustomObject]@{
         Name   = $font.Name
+        ShellObject = $font
         Path   = $font.Path
         Hidden = $namespace.GetDetailsOf($font,2) -eq 'Hide'
     }
@@ -30,14 +32,14 @@ Function Hide-Font {
 
     if($font.hidden){
         Write-Verbose "Font '$FontName' is already set to 'Hide'"
+        return -1
     }
-    else{
-        Write-Verbose "Setting font '$FontName' to 'Hide'"
-        $shell = New-Object -ComObject "Shell.Application"
-        $namespace = $shell.Namespace("C:\Windows\Fonts")
-        $font = $namespace.ParseName($FontName)
-        $hideverb = $font.Verbs() | Where-Object Name -like '*hide*'
-        $hideverb.DoIt()
+    Write-Verbose "Setting font '$FontName' to 'Hide'"
+    $font.ShellObject.Verbs() | Where-Object Name -like '*hide*' | ForEach-Object { $_.DoIt() }
+    # reload font
+    $font = Get-Font $FontName
+    if(!$font.hidden){
+        throw "Error Hiding Font"
     }
 }
 
@@ -52,15 +54,17 @@ Function Show-Font {
         return 
     }
 
-    if($font.hidden){
-        Write-Verbose "Setting font '$FontName' to 'Show'"
-        $shell = New-Object -ComObject "Shell.Application"
-        $namespace = $shell.Namespace("C:\Windows\Fonts")
-        $font = $namespace.ParseName($FontName)
-        $showverb = $font.Verbs() | Where-Object Name -like '*show*'
-        $showverb.DoIt()
+    if(!$font.hidden){
+        Write-Error "Font '$FontName' is already set to 'Show'"
+        return -1 
     }
-    else{
-        Write-Verbose "Font '$FontName' is already set to 'Show'"
+
+    Write-Verbose "Setting font '$FontName' to 'Show'"
+    $font.ShellObject.Verbs() | Where-Object Name -like '*show*'  | ForEach-Object { $_.DoIt() }
+    #$showverb.DoIt()
+    # reload
+    $font = Get-Font $FontName
+    if($font.hidden){
+        throw "Error Showing Font"
     }
 }

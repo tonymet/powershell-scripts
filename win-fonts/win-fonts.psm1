@@ -50,15 +50,16 @@ Function Set-FontStatus {
         .OUTPUTS
             Use -Verbose for output
     #>
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "")]
     [CmdletBinding(SupportsShouldProcess)]
     Param(
         [parameter(Mandatory)]$Status,
-        [string]$Name
+        [parameter(Mandatory)]$Name
     )
 
     switch -regex ($Status){
-         "Show" { Show-Font $Name }
-         "Hide" { Hide-Font $Name }
+         "Show" { Show-Font @args }
+         "Hide" { Hide-Font @args}
          default { throw "$Status is not valid"}
     }
 }
@@ -85,6 +86,39 @@ Function Hide-Font {
         throw "Error Hiding Font"
     }
     return
+}
+
+Function Remove-Font {
+    <#
+        .SYNOPSIS
+            Remove (delete) a font from C:\Windows\Fonts via the shell.
+
+        .DESCRIPTION
+            Remove (delete) a font from c:\Windows\Fonts via the shell (windows explorer). Font will
+            be placed in the trash.
+
+
+        .EXAMPLE
+            Remove-Font -Name "Monotype Corsiva Italic"
+
+        .OUTPUTS
+            Use -Verbose for output
+    #>
+    [CmdletBinding(SupportsShouldProcess)]
+    Param(
+        [parameter(Mandatory)]$Name
+    )
+
+    $font = Get-Font $Name
+    if(!$font){
+        Write-Error "$Name not found"
+        return
+    }
+
+    Write-Verbose "Deleting font '$Name'"
+    if($PSCmdlet.ShouldProcess($Name)){
+        $font.ShellObject.Verbs() | Where-Object Name -eq '&Delete'  | ForEach-Object { $_.DoIt() }
+    }
 }
 
 Function Show-Font {

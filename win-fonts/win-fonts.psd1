@@ -18,6 +18,7 @@
     NestedModules         = @()
     FunctionsToExport     = @(
         'Set-FontStatus'
+        'Remove-Font'
         'Search-FontName'
         'Search-FontStatus'
     )

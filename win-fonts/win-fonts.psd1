@@ -7,8 +7,8 @@
     GUID                  = ''
     Author                = 'tonymet'
     CompanyName           = 'tonymet'
-    Copyright             = '(c) 2024 tonyme. All rights reserved.'
-    Description           = 'Powershell Module for Managing Windows Fonts using Shell.Application / Windows Explorer'
+    Copyright             = '(c) 2024 tonymet. All rights reserved.'
+    Description           = 'Powershell Module for Managing Windows Fonts using Shell.Application / Windows Explorer. No files or registry keys are edited directly'
     PowerShellVersion     = '5.1'
     ProcessorArchitecture = 'None'
     RequiredAssemblies    = @()

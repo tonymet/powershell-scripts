@@ -17,13 +17,13 @@ Function Get-Font {
             [System.Collections.Generic.List[PSCustomObject]]
     #>
     Param(
-        [parameter(Mandatory)]$FontName
+        [parameter(Mandatory)]$Name
     )
     $shell = New-Object -ComObject "Shell.Application"
     $namespace = $shell.Namespace("C:\Windows\Fonts")
-    $font = $namespace.ParseName($FontName)
+    $font = $namespace.ParseName($Name)
     if(!$font){
-        Write-Error "$FontName not found"
+        Write-Error "$Name not found"
         return
     }
 
@@ -56,32 +56,32 @@ Function Set-FontStatus {
         [parameter(Mandatory)]$Status,
         [parameter(Mandatory)]$Name
     )
-
     switch -regex ($Status){
-         "Show" { Show-Font @args }
-         "Hide" { Hide-Font @args}
+         "Show" { Show-Font @PSBoundParameters }
+         "Hide" { Hide-Font @PSBoundParameters }
          default { throw "$Status is not valid"}
     }
 }
 Function Hide-Font {
     Param(
-        [parameter(Mandatory)]$FontName
+        [parameter(Mandatory)]$Name,
+        [parameter(Mandatory)]$Status
     )
 
-    $font = Get-Font $FontName
+    $font = Get-Font $Name
     if(!$font){
-        Write-Error "$FontName not found"
+        Write-Error "$Name not found"
         return
     }
 
     if($font.hidden){
-        Write-Verbose "Font '$FontName' is already set to 'Hide'"
+        Write-Verbose "Font '$Name' is already set to 'Hide'"
         return -1
     }
-    Write-Verbose "Setting font '$FontName' to 'Hide'"
+    Write-Verbose "Setting font '$Name' to 'Hide'"
     $font.ShellObject.Verbs() | Where-Object Name -eq '&Hide' | ForEach-Object { $_.DoIt() }
     # reload font
-    $font = Get-Font $FontName
+    $font = Get-Font $Name
     if(!$font.hidden){
         throw "Error Hiding Font"
     }
@@ -123,24 +123,25 @@ Function Remove-Font {
 
 Function Show-Font {
     Param(
-        [parameter(Mandatory)]$FontName
+        [parameter(Mandatory)]$Name,
+        [parameter(Mandatory)]$Status
     )
 
-    $font = Get-Font $FontName
+    $font = Get-Font $Name
     if(!$font){
-        Write-Error "$FontName not found"
+        Write-Error "$Name not found"
         return
     }
 
     if(!$font.hidden){
-        Write-Error "Font '$FontName' is already set to 'Show'"
+        Write-Error "Font '$Name' is already set to 'Show'"
         return
     }
 
-    Write-Verbose "Setting font '$FontName' to 'Show'"
+    Write-Verbose "Setting font '$Name' to 'Show'"
     $font.ShellObject.Verbs() | Where-Object Name -eq '&Show'  | ForEach-Object { $_.DoIt() }
     # reload
-    $font = Get-Font $FontName
+    $font = Get-Font $Name
     if($font.hidden){
         throw "Error Showing Font"
     }

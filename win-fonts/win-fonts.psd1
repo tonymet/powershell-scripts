@@ -1,10 +1,10 @@
 @{
     RootModule            = 'win-fonts.psm1'
-    ModuleVersion         = '0.0.1'
+    ModuleVersion         = '0.0.2'
     CompatiblePSEditions  = @(
         'Core'
     )
-    GUID                  = ''
+    GUID = '7a557357-e256-4873-8e0e-5c3f531aa4bf'
     Author                = 'tonymet'
     CompanyName           = 'tonymet'
     Copyright             = '(c) 2024 tonymet. All rights reserved.'
@@ -25,7 +25,7 @@
     )
     CmdletsToExport       = @()
     VariablesToExport     = @()
-    AliasesToExport       = '*'
+    AliasesToExport       = @()
     ModuleList            = @()
     FileList              = @(
         'win-fonts.psd1'
@@ -40,8 +40,8 @@
                 'PSEdition_Core'
                 'Windows'
             )
-            LicenseUri = 'https://github.com/tonymet/powershell-scripts/LICENSE'
-            ProjectUri = 'https://github.com/tonymet/powershell-scripts'
+            LicenseUri = 'https://github.com/tonymet/powershell-scripts/blob/master/LICENSE'
+            ProjectUri = 'https://github.com/tonymet/powershell-scripts/tree/master/win-fonts'
             IconUri    = 'https://raw.githubusercontent.com/PSModule/Fonts/main/icon/icon.png'
         }
     }
@@ -49,8 +49,8 @@
 # SIG # Begin signature block
 # MIIFuQYJKoZIhvcNAQcCoIIFqjCCBaYCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCBf5MsPN69lB1ip
-# vzW502ZzemNcEgWslotHo17GMH0jI6CCAyIwggMeMIICBqADAgECAhA8Azq0Wr3+
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCB+1keNWWdne1SD
+# h354HCgaHHZgk4GdlenRvLffj60eZ6CCAyIwggMeMIICBqADAgECAhA8Azq0Wr3+
 # pEKieGfMmIkiMA0GCSqGSIb3DQEBCwUAMCcxJTAjBgNVBAMMHFBvd2VyU2hlbGwg
 # Q29kZSBTaWduaW5nIENlcnQwHhcNMjQwMzI5MjE1NTI0WhcNMjUwMzI5MjIxNTI0
 # WjAnMSUwIwYDVQQDDBxQb3dlclNoZWxsIENvZGUgU2lnbmluZyBDZXJ0MIIBIjAN
@@ -71,11 +71,11 @@
 # IENvZGUgU2lnbmluZyBDZXJ0AhA8Azq0Wr3+pEKieGfMmIkiMA0GCWCGSAFlAwQC
 # AQUAoIGEMBgGCisGAQQBgjcCAQwxCjAIoAKAAKECgAAwGQYJKoZIhvcNAQkDMQwG
 # CisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEOMAwGCisGAQQBgjcCARUwLwYJKoZI
-# hvcNAQkEMSIEIAOOBXUy9EEVyDrGZmZwdQRUhnlsk8nuXikq26XzjOGjMA0GCSqG
-# SIb3DQEBAQUABIIBACQbE5CQppxYunaNWyDnODIj4al5hn4Av7wjZ4Z/DeBwIElD
-# leyHbUPjzYkF/FpQ4DowOhzhjm/IoFEpKvYAyNqXV2r6P5zfab2tTXEWrwYN3/ng
-# ux7Stc1HrmonhX2e3sUoy1jf/OhWje63OiwdENg+FTZW9wSq/whlXksfDCHSmgRN
-# oYBUFEWFPBdX4NWITYIpx5Uk5ykhkVzTu0LjxdPC9sHo76OOG4lGwU/U5XXXV82t
-# KNK964ucEbDIwc8/7bNvjVrsOWUQLIOmbXNJZCin/Gs9pCKcZlJKXvx7GbwZkKZg
-# 2ng5P7gOUIMM7b3hvzl9nrfDwX18h1nnurt4i3w=
+# hvcNAQkEMSIEIGmYPmQFCXxFuMmmNG9Yu526SAeNFZdQAkbHaV50LdjuMA0GCSqG
+# SIb3DQEBAQUABIIBAAgDorTuvM7QN8bsYwQLeRvdJ9jlF/wQMXsOQmDe+9ye1ty8
+# ijd69KDCP+cDJDuUMWyCneqmHdb0oBQUcjay/bvPy/bWO1UO73I9CZmYRMmPv7tl
+# LhVLXNlet+u0OUM6TQje/pB80s4x/dfz9kVexyLsQxSo3P08qRVg9G7gVWyN+9nn
+# wG+7+Xrjag9mmExNTL1C7oZzXppJ+TvFSJikOLl1RT62SVm0CNxp/VU+rDRaANHh
+# Dhu9ebmtxBPFpSvu7PRoeAQm9TJjPwWnLiOao3U6xIlAOchxLCHh9U0keTtUuy3L
+# +BYFWiv5rDoVHtpFxO7+XB3qSnHtbUq0HapTP2Y=
 # SIG # End signature block

@@ -1,3 +1,7 @@
+$FontDir = Join-Path $ENV:WINDIR "Fonts"
+if(! (Test-Path $FontDir) ){
+    throw "$FontDir does not exist"
+}
 Function Get-Font {
      <#
         .SYNOPSIS
@@ -20,7 +24,7 @@ Function Get-Font {
         [parameter(Mandatory)]$Name
     )
     $shell = New-Object -ComObject "Shell.Application"
-    $namespace = $shell.Namespace("C:\Windows\Fonts")
+    $namespace = $shell.Namespace($FontDir)
     $font = $namespace.ParseName($Name)
     if(!$font){
         Write-Error "$Name not found"
@@ -166,7 +170,7 @@ Function Search-FontStatus {
         [string]$Status
     )
     $sh = New-Object -ComObject "Shell.Application"
-    $n = $sh.Namespace("C:\Windows\Fonts")
+    $n = $sh.Namespace($FontDir)
     switch -regex ($Status) {
         "Show|Hide" {
             $n.Items() | ForEach-Object {[PSCustomObject]@{ Name=$_.Name ; Path=$_.Path; Hidden= $n.GetDetailsOf($_,2); FontObject=$_ } } | Where-Object {$_.Hidden -eq $Status}
@@ -198,15 +202,14 @@ Function Search-FontName {
         [string]$Name
     )
     $sh = New-Object -ComObject "Shell.Application"
-    $n = $sh.Namespace("C:\Windows\Fonts")
+    $n = $sh.Namespace($FontDir)
     $n.Items() | Where-Object {$_.Name -eq $Name } | ForEach-Object {[PSCustomObject]@{ Name=$_.Name ; Path=$_.Path; Hidden= $n.GetDetailsOf($_,2); FontObject=$_} }
 }
-
 # SIG # Begin signature block
 # MIIFuQYJKoZIhvcNAQcCoIIFqjCCBaYCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCD+YxcVCvy6fXLM
-# oK6FxIk9T8viR0enU7aVykn0GrkQwKCCAyIwggMeMIICBqADAgECAhA8Azq0Wr3+
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCw5gefkdAzT0pL
+# LSELdtDLldrItKn0ejq9khHT/9ipaKCCAyIwggMeMIICBqADAgECAhA8Azq0Wr3+
 # pEKieGfMmIkiMA0GCSqGSIb3DQEBCwUAMCcxJTAjBgNVBAMMHFBvd2VyU2hlbGwg
 # Q29kZSBTaWduaW5nIENlcnQwHhcNMjQwMzI5MjE1NTI0WhcNMjUwMzI5MjIxNTI0
 # WjAnMSUwIwYDVQQDDBxQb3dlclNoZWxsIENvZGUgU2lnbmluZyBDZXJ0MIIBIjAN
@@ -227,11 +230,11 @@ Function Search-FontName {
 # IENvZGUgU2lnbmluZyBDZXJ0AhA8Azq0Wr3+pEKieGfMmIkiMA0GCWCGSAFlAwQC
 # AQUAoIGEMBgGCisGAQQBgjcCAQwxCjAIoAKAAKECgAAwGQYJKoZIhvcNAQkDMQwG
 # CisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEOMAwGCisGAQQBgjcCARUwLwYJKoZI
-# hvcNAQkEMSIEIJC/MFOSTwDoEW//PdSnQwmLmd3rXSJoB2j+FzpJuYVjMA0GCSqG
-# SIb3DQEBAQUABIIBAB+mfEnIoeHpw/6WbU8kE5NNpFR1V7+q4gZrRy9yUru/tJdg
-# 9wZZv3oPUHNjXfJjfXs8Q2GtAo1jnjMEkPrHgZ1xGJfyhXopnNXDs9UQ/sx6/wc2
-# s/4B/ZucNS1B1Zz6Fn6SYXzaspWlNtqsr9Y1tnAVZRFJS3npYC/sd40+RfTFJKNO
-# B4A+aCFz0bgVdXgrdVwbkok7oTaBqJwkVy5uRbPDG752xNvxeokZjNMWSV9qIoed
-# naJPf0hVuuZaP8y6vZM60JG36HDE22c1aWVjSk48tUOTRzHdlUXrxLBxHHwh5dSC
-# YZmNaObZNZrdS1oemjx0ROlMunZXzcrqAkirV+I=
+# hvcNAQkEMSIEIBZIU7mKuFUh3bK+TUTA2XWRPE9QpPs/6fhvJbtrUZc9MA0GCSqG
+# SIb3DQEBAQUABIIBAKrhEPVdf3iLwPGG4NxqS9ztokGyr0PUo1/7BdcZI2O0hZ8t
+# NTypp2HrRHINTNDDAJqMi/wXNBz9hUDcwhk+xiCYox63gXCHZKZU7k3VmD0zxDnh
+# L0fyut7Py0dJ0veTYRyDihtPEHAWvVoDQfUik5Xig+Gse/6oNm0Ct6vH5e871uFD
+# O2WyfSKH4byjNKIdq8PwxHth/8PR6/EIpebuV3qVSBjqcfBbGRyqR96/cxGJlHJF
+# I7OflIrW0/NPw4OYm2J5NPjJooLmOFtcqwP/tAvxeHFsyc5yNr/5F/JqDkXNs6rw
+# Z6Ewsntamzy4U+zY/Os1lq72BGxTDaAplLJAk1o=
 # SIG # End signature block

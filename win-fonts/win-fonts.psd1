@@ -17,7 +17,8 @@
     FormatsToProcess      = @()
     NestedModules         = @()
     FunctionsToExport     = @(
-        'Set-FontStatus'
+        'Hide-Font'
+        'Show-Font'
         'Remove-Font'
         'Search-FontName'
         'Search-FontStatus'

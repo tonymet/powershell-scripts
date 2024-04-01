@@ -35,37 +35,22 @@ Function Get-Font {
     }
 }
 
-Function Set-FontStatus {
+Function Hide-Font {
     <#
         .SYNOPSIS
-            Set Font "Show" or "Hide" Status Font by Name
+            Hide Font in Fonts control panel.  Hidden from application font lists
 
         .DESCRIPTION
-            Hide/Show font in Windows Explorer making the font unavailable/available to use in Apps. Font remains installed
+            Hide font in Windows Explorer making the font unavailable to use in Apps. Font remains installed
 
         .EXAMPLE
-            Set-FontStatus -Status Hide -Name "Monotype Corsiva Italic"
-            Set-FontStatus -Status Show -Name "Monotype Corsiva Italic"
+            Hide-Font -Name "Monotype Corsiva Italic"
 
         .OUTPUTS
             Use -Verbose for output
     #>
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "")]
-    [CmdletBinding(SupportsShouldProcess)]
     Param(
-        [parameter(Mandatory)]$Status,
         [parameter(Mandatory)]$Name
-    )
-    switch -regex ($Status){
-         "Show" { Show-Font @PSBoundParameters }
-         "Hide" { Hide-Font @PSBoundParameters }
-         default { throw "$Status is not valid"}
-    }
-}
-Function Hide-Font {
-    Param(
-        [parameter(Mandatory)]$Name,
-        [parameter(Mandatory)]$Status
     )
 
     $font = Get-Font $Name
@@ -122,9 +107,21 @@ Function Remove-Font {
 }
 
 Function Show-Font {
+    <#
+        .SYNOPSIS
+            Show font in Windows control panel and apps
+
+        .DESCRIPTION
+            Show font in Windows Explorer making the font available to use in Apps. Font remains installed
+
+        .EXAMPLE
+            Show-Font -Name "Monotype Corsiva Italic"
+
+        .OUTPUTS
+            Use -Verbose for output
+    #>
     Param(
-        [parameter(Mandatory)]$Name,
-        [parameter(Mandatory)]$Status
+        [parameter(Mandatory)]$Name
     )
 
     $font = Get-Font $Name

@@ -8,7 +8,8 @@ Assorted Powershell scripts for WSL backup, disabling fonts, wake on lan, managi
 * wol
 
 ## backup-wsl
-Backup wsl directory to your windows home directory using robocopy
+Backup wsl directory to your windows home directory using robocopy. Includes
+Windows Scheduler install script.  [Full docs found here](https://tonym.us/wsl2-backup-to-onedrive-cloud.html)
 
 Usage:  `pwsh backup-wsl.ps1`
 

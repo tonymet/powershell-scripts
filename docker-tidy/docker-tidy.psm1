@@ -1,7 +1,7 @@
 $ModuleName="Docker-Tidy"
 Function Optimize-DockerTidy{
-    $savingsImage=$(docker image prune -f)
-    $savingsContainer=$(docker container prune -f)
+    $savingsImage=$(docker image prune -f | Select-String -Pattern reclaimed )
+    $savingsContainer=$(docker container prune -f | Select-String -Pattern reclaimed)
     $LogSource = $ModuleName
 
     if($LASTEXITCODE -ne 0){
@@ -17,12 +17,11 @@ Function Install-DockerTidy{
     # must be run as administrator
     New-EventLog -LogName Application -Source $ModuleName
     Register-DockerTidy
-} 
+}
 
-function Register-DockerTidy{
-    $taskName="Docker-Tidy"
-    if (Get-ScheduledTask -TaskName $taskName -WarningAction silentlyContinue){
-        Write-Error "Already Installed: ${taskName}"
+Function Register-DockerTidy{
+    if (Get-ScheduledTask -TaskName $ModuleName -WarningAction silentlyContinue){
+        Write-Error "Already Installed: ${ModuleName}"
         exit 1
     }
     $time = New-ScheduledTaskTrigger -Weekly -At 3pm -DaysOfWeek Sunday
@@ -33,7 +32,7 @@ function Register-DockerTidy{
     Register-ScheduledTask -TaskName  $taskName -Trigger $Time -User $User -Action $action
 }
 
-Function Get-DockerTidyEvents {
+Function Get-DockerTidyEvent {
     Get-EventLog -LogName Application -Source $ModuleName
 
 }

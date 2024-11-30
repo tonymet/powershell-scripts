@@ -9,12 +9,12 @@ Install-DockerTidy
 # test run
 Start-ScheduledTask -TaskName Docker-Tidy
 # Show Events
-Get-DockerTidyEvents
+Get-DockerTidyEvent
 ```
 
 ## Example Results
 ```
-Get-EventLog -LogName Application -Source Docker-Tidy
+Get-DockerTidyEvent
 
    Index Time          EntryType   Source                 InstanceID Message
    ----- ----          ---------   ------                 ---------- -------

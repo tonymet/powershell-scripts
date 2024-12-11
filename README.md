@@ -4,8 +4,9 @@ Assorted Powershell scripts for WSL backup, disabling fonts, wake on lan, managi
 * backup-wsl
 * crlf
 * services
-* win-fonts
+* [win-fonts](./win-fonts/)
 * wol
+* [docker-tidy](./docker-tidy/)
 
 ## backup-wsl
 Backup wsl directory to your windows home directory using robocopy. Includes

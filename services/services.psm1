@@ -1,5 +1,5 @@
 # credit stackexchange mklement0 https://stackoverflow.com/questions/54773305/powershell-how-to-find-out-which-running-services-arent-part-of-os-and-non-ms
-#requires -runAsAdministrator
+# #requires -runAsAdministrator
 
 function Get-ServiceFileInfo {
 
@@ -68,4 +68,8 @@ function Get-ServiceFileInfo {
     }
   }
 
+}
+
+Function Get-ThirdPartyServices {
+  Get-ServiceFileInfo | where-object {$_.Status -eq "Running"} |where-object {$_.CompanyName -ne "Microsoft Corporation"}
 }

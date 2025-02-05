@@ -12,7 +12,7 @@
 RootModule = '.\backup-wsl'
 
 # Version number of this module.
-ModuleVersion = '0.0.2'
+ModuleVersion = '0.0.3'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -61,7 +61,7 @@ PrivateData = @{
             'events'
         )
         LicenseUri = 'https://github.com/tonymet/powershell-scripts/blob/master/LICENSE'
-        ProjectUri = 'https://github.com/tonymet/powershell-scripts/tree/backup-wsl'
+        ProjectUri = 'https://github.com/tonymet/powershell-scripts/tree/master/backup-wsl'
         IconUri    = 'https://raw.githubusercontent.com/PSModule/Fonts/main/icon/icon.png'
     }
 }
@@ -77,8 +77,8 @@ PrivateData = @{
 # SIG # Begin signature block
 # MIIFuQYJKoZIhvcNAQcCoIIFqjCCBaYCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCoB0DJorUtVyms
-# 3lbk6R9awXg/Xh2eHZRzlW0jtkI48qCCAyIwggMeMIICBqADAgECAhA8Azq0Wr3+
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCBGmuXqENW0/RIE
+# lMNmGcnUC/xdOsUmxb6KekA9Uzj+VKCCAyIwggMeMIICBqADAgECAhA8Azq0Wr3+
 # pEKieGfMmIkiMA0GCSqGSIb3DQEBCwUAMCcxJTAjBgNVBAMMHFBvd2VyU2hlbGwg
 # Q29kZSBTaWduaW5nIENlcnQwHhcNMjQwMzI5MjE1NTI0WhcNMjUwMzI5MjIxNTI0
 # WjAnMSUwIwYDVQQDDBxQb3dlclNoZWxsIENvZGUgU2lnbmluZyBDZXJ0MIIBIjAN
@@ -99,11 +99,11 @@ PrivateData = @{
 # IENvZGUgU2lnbmluZyBDZXJ0AhA8Azq0Wr3+pEKieGfMmIkiMA0GCWCGSAFlAwQC
 # AQUAoIGEMBgGCisGAQQBgjcCAQwxCjAIoAKAAKECgAAwGQYJKoZIhvcNAQkDMQwG
 # CisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEOMAwGCisGAQQBgjcCARUwLwYJKoZI
-# hvcNAQkEMSIEIPg73fQWq3TovnKlDpY3eN3dDM1m+PgZC8IZ2XEc4nAMMA0GCSqG
-# SIb3DQEBAQUABIIBALKP4/vWAOhyXrODnSr69bwgJlRAHjHMe/c+9KU6eclFmZ+P
-# RDL5kMlPI+Ag5JQ+VYbLfem6miFi0NskhbFGKnN9a0bKZPBEdqzITkU6M5h6USk+
-# 3Ct2D0ESCLtmryLeHw9R0dYw3pD4GOA9gUUgipZnLaaqCy/1aHJ8IFNbdKxzILaB
-# h3YYTa91bCk54fM/tfDUmIABu0i8qQ3aFLmS/49tQ7U+i4P9riq651uYxFxP3uBU
-# q19emdVubmWUeV4tFvJdxdJ2uop+nBCLgB49rc3fkwch/57BJ8ex2HyOQ8i1dR+9
-# +07CbUkfKYuvsQI4XjmLSB+viUMNVKUj0tsHVGg=
+# hvcNAQkEMSIEIKHbPwHFGfLfr6ScqynZX6WO6agpIPdeXqiyco6A5O/SMA0GCSqG
+# SIb3DQEBAQUABIIBAIVJ0LpwtDr57FrqmJHz4UyFTMX13Dyt0MK6Rm6j8W7O6CST
+# eIod6K4rrCnMrnGGaGNmtLwIV/ANvohhACEPdXPo4YRWKYtWo5eY/lStTMnAzkIc
+# n0CNI6o0rCVGY28GKNxhhryx+Y3nGaxurCpOXl87A4td3PzCzUgbD9L4v3ximb2u
+# LctFRxhVVbDm2qf8harc1+/uxrDd16cZf0CwpfD4pMGKpukAZJ1IjQEM143P6rA4
+# HqJBVq0xxHSsdkQ4v/w+wN3GQEleranVrtZ3IbRitEU3S7NEGHm8lExB8Qdlk+4s
+# bN98a8rwGWcP57ESU5V9eY8JNC2lA4YB+iqiCAc=
 # SIG # End signature block

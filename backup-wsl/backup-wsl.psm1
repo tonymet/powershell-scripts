@@ -1,6 +1,24 @@
 $ModuleName="Backup-WSL"
 $env:WSL_UTF8=1
 Function Backup-WSL(){
+    <#
+        .SYNOPSIS
+            Backup //wsl.localhost/DISTRO/USERNAME/SUBDIR to %USERPROFILE%/OneDrive/Documents/SUBDIR with robocopy . 
+            set $ENV:BACKUP_WSL_SUBDIR to specify the subdir
+
+        .DESCRIPTION
+            Backup //wsl.localhost/DISTRO/USERNAME/SUBDIR to %USERPROFILE%/OneDrive/Documents/SUBDIR with robocopy . 
+            set $ENV:BACKUP_WSL_SUBDIR to specify the subdir
+
+        .EXAMPLE
+            Backup-WSL
+        .EXAMPLE
+            # full command to trigger from .bat or Scheduled Task
+            pwsh -C "Import-Module $HOME\scripts\backup-wsl && Backup-WSL"
+
+        .OUTPUTS
+            see %USERPROFILE%\backup-wsl.log.txt
+    #>
     $logfile="$HOME\backup-wsl.log.txt"
     if ((Get-Item $logfile).length -gt 1280000){
         Remove-Item $logfile
@@ -31,6 +49,19 @@ Function Backup-WSL(){
 }
 
 Function Install-BackupWSL{
+     <#
+        .SYNOPSIS
+            Install scheduled task 2pm daily
+
+        .DESCRIPTION
+            Install scheduled task 2pm daily
+
+        .EXAMPLE
+            Install-BackupWSL
+            
+        .OUTPUTS
+            None
+    #>
     $time = New-ScheduledTaskTrigger -Daily -At 2pm
     $user = (whoami)
     $action = New-ScheduledTaskAction -Execute "${env:ProgramFiles}\PowerShell\7\pwsh.exe"`
@@ -72,8 +103,8 @@ Function Build-BackupWSLSignature {
 # SIG # Begin signature block
 # MIIFuQYJKoZIhvcNAQcCoIIFqjCCBaYCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCaKzkjV6Jq4tU1
-# /z2sp0uv/DPxk2VbDgYbvQXvlMSxWaCCAyIwggMeMIICBqADAgECAhA8Azq0Wr3+
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCAnMiyx629woI7x
+# 1mLSDXmREtFkTRIkunVWlVN2jc68wqCCAyIwggMeMIICBqADAgECAhA8Azq0Wr3+
 # pEKieGfMmIkiMA0GCSqGSIb3DQEBCwUAMCcxJTAjBgNVBAMMHFBvd2VyU2hlbGwg
 # Q29kZSBTaWduaW5nIENlcnQwHhcNMjQwMzI5MjE1NTI0WhcNMjUwMzI5MjIxNTI0
 # WjAnMSUwIwYDVQQDDBxQb3dlclNoZWxsIENvZGUgU2lnbmluZyBDZXJ0MIIBIjAN
@@ -94,11 +125,11 @@ Function Build-BackupWSLSignature {
 # IENvZGUgU2lnbmluZyBDZXJ0AhA8Azq0Wr3+pEKieGfMmIkiMA0GCWCGSAFlAwQC
 # AQUAoIGEMBgGCisGAQQBgjcCAQwxCjAIoAKAAKECgAAwGQYJKoZIhvcNAQkDMQwG
 # CisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEOMAwGCisGAQQBgjcCARUwLwYJKoZI
-# hvcNAQkEMSIEIJ8KH6j3oNYBlpF7oWCuhrHxL3r+w/MXzFx8P571gSCjMA0GCSqG
-# SIb3DQEBAQUABIIBAGGuaLd7A5ETi4AsGGUNVctcdMidMC/11TXVT9l5eQL3cqvi
-# lztCCAEGorURXHGPpG1A1xPhXcbA7WGIhs3mAIRrM9LR9qlpaBIgmB2PtZkGtlcO
-# L3SNGp5cBFz0sJbNyOcej8810AWw6bvE94aziGzfRw5BlO/XNkrOLsyVcrdBrKwg
-# ENx2w3gGfbuPN2EaKhzQyohZG/cOrVq1AjPqr+MaP096iGXiHYZV/EfFYX/uvoj/
-# GmT6ckFvcleIS5O2zXpzAI+2+X9dA5sodOWVJTYOQdWzpTX52RmgiBqG7WcDOwLL
-# 2Xd3XFE77XvpgKf9kdBDVeYQnhs53dEFx8Ge7G4=
+# hvcNAQkEMSIEIKAvWlDTRN5AG0fpsixLZT9adi3yYYlsWpeQbraKPaRdMA0GCSqG
+# SIb3DQEBAQUABIIBAGUMGo8IFGbhKUvOFkuv2vmGRyTlQngmhxsvgEH2jCLJqMTU
+# OF92OBNrSKN3GZrEpkXFN5MtP2vJJw8acRkQh81hvjJysV8DCYI00idJxh2zIlcN
+# /MoqVawUsmAQSSPpEef7LquQl2wx76JQfMni185VINQIPkPCsmG+ErFljU7KTMZ6
+# uSOZuYEdNNBjB98C77Rod+rXY8JM1Oihbo3FbEM6UYDGOXLqqKphnkt9LVHOPj3a
+# ZtEj3Upxf+bURrVq8TUOot/d6zwsgDBZtubnIjE0tDnstBwwXpVEkiY3f8BG2bKo
+# Uh5KKAmMe6COKgxNg8ZJBDJYZqpZv/bfoMuVUtM=
 # SIG # End signature block

@@ -12,7 +12,7 @@
 RootModule = '.\backup-wsl'
 
 # Version number of this module.
-ModuleVersion = '0.0.1'
+ModuleVersion = '0.0.2'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -36,7 +36,7 @@ Description = 'Backup WSL to Onedrive using Robocopy, Daily Scheduled Task'
 PowerShellVersion = '5.1'
 
 #FunctionsToExport = @()
-FunctionsToExport = @('Backup-WSL', 'Install-BackupWSL', 'Build-BackupWSLSignature')
+FunctionsToExport = @('Backup-WSL', 'Install-BackupWSL', 'Get-BackupWSLEvent', 'Build-BackupWSLSignature')
 #CmdletsToExport = @('Backup-WSL', 'Install-BackupWSL', 'Build-BackupWSLSignature')
 VariablesToExport = @()
 AliasesToExport = @()
@@ -77,8 +77,8 @@ PrivateData = @{
 # SIG # Begin signature block
 # MIIFuQYJKoZIhvcNAQcCoIIFqjCCBaYCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCAyaKUByyF06tMa
-# hHB+BnS+6QRVeyaxlCaiYIwi9ekJjqCCAyIwggMeMIICBqADAgECAhA8Azq0Wr3+
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCoB0DJorUtVyms
+# 3lbk6R9awXg/Xh2eHZRzlW0jtkI48qCCAyIwggMeMIICBqADAgECAhA8Azq0Wr3+
 # pEKieGfMmIkiMA0GCSqGSIb3DQEBCwUAMCcxJTAjBgNVBAMMHFBvd2VyU2hlbGwg
 # Q29kZSBTaWduaW5nIENlcnQwHhcNMjQwMzI5MjE1NTI0WhcNMjUwMzI5MjIxNTI0
 # WjAnMSUwIwYDVQQDDBxQb3dlclNoZWxsIENvZGUgU2lnbmluZyBDZXJ0MIIBIjAN
@@ -99,11 +99,11 @@ PrivateData = @{
 # IENvZGUgU2lnbmluZyBDZXJ0AhA8Azq0Wr3+pEKieGfMmIkiMA0GCWCGSAFlAwQC
 # AQUAoIGEMBgGCisGAQQBgjcCAQwxCjAIoAKAAKECgAAwGQYJKoZIhvcNAQkDMQwG
 # CisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEOMAwGCisGAQQBgjcCARUwLwYJKoZI
-# hvcNAQkEMSIEIHh4lEEa5P7ODGhKEo5EewaCbgAK5fxN46yEcOspNG84MA0GCSqG
-# SIb3DQEBAQUABIIBAEPawIjXNOWAmbfVWL0MVzsH0q6269WbRBBmqlb5+lTtDxUU
-# FBcKSTfQ7o6APUR9WEMMtJ1nl9O3lyXEDSlMod9VtWqErHvPCzqDEBCuXF33jlex
-# oFn4z9b4hc8VtQswgrjR/XYFhzEfi8qcCpy1kGxxU827faZz91nFJJF7uukfF366
-# Pu24IELJCEUAnNt+dasIpVW9LvwvGfGp81uMCJJp6Wov5MMorNBziFPGEkyijznl
-# A/wM64s77hqZmNbGUVnnifWcse64ISXDqlsLVIK9ndL3yUHPPTsn9WRg/Hexw7Kd
-# la3PsBCHrzZsTzM12oZbQcOyrKWzeSAOU8KlP2s=
+# hvcNAQkEMSIEIPg73fQWq3TovnKlDpY3eN3dDM1m+PgZC8IZ2XEc4nAMMA0GCSqG
+# SIb3DQEBAQUABIIBALKP4/vWAOhyXrODnSr69bwgJlRAHjHMe/c+9KU6eclFmZ+P
+# RDL5kMlPI+Ag5JQ+VYbLfem6miFi0NskhbFGKnN9a0bKZPBEdqzITkU6M5h6USk+
+# 3Ct2D0ESCLtmryLeHw9R0dYw3pD4GOA9gUUgipZnLaaqCy/1aHJ8IFNbdKxzILaB
+# h3YYTa91bCk54fM/tfDUmIABu0i8qQ3aFLmS/49tQ7U+i4P9riq651uYxFxP3uBU
+# q19emdVubmWUeV4tFvJdxdJ2uop+nBCLgB49rc3fkwch/57BJ8ex2HyOQ8i1dR+9
+# +07CbUkfKYuvsQI4XjmLSB+viUMNVKUj0tsHVGg=
 # SIG # End signature block

@@ -1,14 +1,24 @@
+$ModuleName="Backup-WSL"
+$env:WSL_UTF8=1
 Function Backup-WSL(){
     $logfile="$HOME\backup-wsl.log.txt"
-    if ((Get-Item $logfile).length -gt 128000){
+    if ((Get-Item $logfile).length -gt 1280000){
         Remove-Item $logfile
     }
-    $src="\\wsl.localhost\Debian\home\${env:Username}\sotion"
-    $dest=$(Join-Path ${env:OneDrive} "Documents\Sotion")
+    $subDir = [string]($env:BACKUP_WSL_SUBDIR ?? "sotion")
+    $wslUser=[string](wsl whoami)
+    $wslDistro=[string](wsl --list -q | Select-Object -first 1)
+    if ($LASTEXITCODE -ne 0){
+        $message = "wsl command missing"
+        Write-EventLog  -LogName Application -Source "Backup-WSL" -EventID 3001 -Message $message
+        exit 
+    }
+    $src=[string](Join-Path "\\wsl.localhost" $wslDistro "home" $wslUser $subDir)
+    $dest=[string](Join-Path ${env:OneDrive} "Documents\${subDir}")
     Write-EventLog  -LogName Application -Source "Backup-WSL" -EventID 3001 -Message "Starting Backup"
     $t0=(Get-Date)
-    #robocopy $src $dest /W:1 /R:0 /E /xd node_modules  /NFL /NDL /LOG+:$logfile
-    robocopy $src $dest /W:1 /R:0 /E /xd node_modules  /NFL /LOG+:$logfile
+    $roboOptions = @( '/W:1','/R:0', '/E', '/xd', 'node_modules' , '/NFL', "/LOG+:${logfile}")
+    robocopy $src $dest $roboOptions
     $exitcoderobo=$LASTEXITCODE
     $t1=(Get-Date)
     $delta =($t1-$t0)
@@ -28,6 +38,23 @@ Function Install-BackupWSL{
         -C `"Import-Module $HOME\scripts\backup-wsl && Backup-WSL`""
     Register-ScheduledTask -TaskName "Backup-WSL" -Trigger $Time -User $User -Action $action
 }
+Function Get-BackupWSLEvent {
+     <#
+        .SYNOPSIS
+            Lists latest BackupWSL events from Windows Event Log
+
+        .DESCRIPTION
+            Lists latest BackupWSL events from Windows Event Log
+
+        .EXAMPLE
+            Get-BackupWSLEvent
+
+        .OUTPUTS
+            System.Diagnostics.EventLogEntry
+    #>
+    Get-EventLog -LogName Application -Source $ModuleName
+
+}
 
 Function Build-BackupWSLSignature {
     $cert = Get-ChildItem Cert:\CurrentUser\My -CodeSigningCert |
@@ -37,11 +64,16 @@ Function Build-BackupWSLSignature {
         Set-AuthenticodeSignature -File $_ -Certificate $cert
     }
 }
+
+
+
+
+
 # SIG # Begin signature block
 # MIIFuQYJKoZIhvcNAQcCoIIFqjCCBaYCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCD+bbImfAb8N2p1
-# 9YQI2dKMMUdGH09tc9BQwV8ogg33PaCCAyIwggMeMIICBqADAgECAhA8Azq0Wr3+
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCaKzkjV6Jq4tU1
+# /z2sp0uv/DPxk2VbDgYbvQXvlMSxWaCCAyIwggMeMIICBqADAgECAhA8Azq0Wr3+
 # pEKieGfMmIkiMA0GCSqGSIb3DQEBCwUAMCcxJTAjBgNVBAMMHFBvd2VyU2hlbGwg
 # Q29kZSBTaWduaW5nIENlcnQwHhcNMjQwMzI5MjE1NTI0WhcNMjUwMzI5MjIxNTI0
 # WjAnMSUwIwYDVQQDDBxQb3dlclNoZWxsIENvZGUgU2lnbmluZyBDZXJ0MIIBIjAN
@@ -62,11 +94,11 @@ Function Build-BackupWSLSignature {
 # IENvZGUgU2lnbmluZyBDZXJ0AhA8Azq0Wr3+pEKieGfMmIkiMA0GCWCGSAFlAwQC
 # AQUAoIGEMBgGCisGAQQBgjcCAQwxCjAIoAKAAKECgAAwGQYJKoZIhvcNAQkDMQwG
 # CisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEOMAwGCisGAQQBgjcCARUwLwYJKoZI
-# hvcNAQkEMSIEIHf2i7JaUZXitfksLBOcCEqrR2dOsgHhaEFM0GN/9S+hMA0GCSqG
-# SIb3DQEBAQUABIIBAJbOmR1wTwOuqgdB6rc2BztW7GymVtenWsQ7lwBaiqr/AR9X
-# SJEE0uKOUzSk1AitvDz7+DV6WkcPUf9CmMNx1DNbQVWzZ1eqQoneRExhW1QzHYSS
-# sxllkYE+9sjQ6dUlfJAwz2iH2YH4IElq48pDgEgax5x1FDgTY+J/oqEecdBord2U
-# Uut5Fvgwjf0t+32YbeohnUgFzXZZquZvOdJioukl27o5yIZOOON2xeWNiu5dcbWl
-# 0jMPQLnzwCF8oXpGwvm9ATz913Rm6YvN2CICPh8itSO3NN30ZlXxIaMfAreI3Qfs
-# pXe9DhsUEXA3SjIzRnbg8c0YRoKZAJfga231lFc=
+# hvcNAQkEMSIEIJ8KH6j3oNYBlpF7oWCuhrHxL3r+w/MXzFx8P571gSCjMA0GCSqG
+# SIb3DQEBAQUABIIBAGGuaLd7A5ETi4AsGGUNVctcdMidMC/11TXVT9l5eQL3cqvi
+# lztCCAEGorURXHGPpG1A1xPhXcbA7WGIhs3mAIRrM9LR9qlpaBIgmB2PtZkGtlcO
+# L3SNGp5cBFz0sJbNyOcej8810AWw6bvE94aziGzfRw5BlO/XNkrOLsyVcrdBrKwg
+# ENx2w3gGfbuPN2EaKhzQyohZG/cOrVq1AjPqr+MaP096iGXiHYZV/EfFYX/uvoj/
+# GmT6ckFvcleIS5O2zXpzAI+2+X9dA5sodOWVJTYOQdWzpTX52RmgiBqG7WcDOwLL
+# 2Xd3XFE77XvpgKf9kdBDVeYQnhs53dEFx8Ge7G4=
 # SIG # End signature block

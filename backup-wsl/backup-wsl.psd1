@@ -36,7 +36,7 @@ Description = 'Backup WSL to Onedrive using Robocopy, Daily Scheduled Task'
 PowerShellVersion = '5.1'
 
 #FunctionsToExport = @()
-FunctionsToExport = @('Backup-WSL', 'Install-BackupWSL', 'Get-BackupWSLEvent', 'Build-BackupWSLSignature')
+FunctionsToExport = @('Backup-WSL', 'Install-BackupWSL', 'Get-BackupWSLEvent', 'Build-BackupWSLSignature', 'Measure-Folders')
 #CmdletsToExport = @('Backup-WSL', 'Install-BackupWSL', 'Build-BackupWSLSignature')
 VariablesToExport = @()
 AliasesToExport = @()

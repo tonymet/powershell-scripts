@@ -3,11 +3,11 @@ $env:WSL_UTF8=1
 Function Backup-WSL(){
     <#
         .SYNOPSIS
-            Backup //wsl.localhost/DISTRO/USERNAME/SUBDIR to %USERPROFILE%/OneDrive/Documents/SUBDIR with robocopy . 
+            Backup //wsl.localhost/DISTRO/USERNAME/SUBDIR to %USERPROFILE%/OneDrive/Documents/SUBDIR with robocopy .
             set $ENV:BACKUP_WSL_SUBDIR to specify the subdir
 
         .DESCRIPTION
-            Backup //wsl.localhost/DISTRO/USERNAME/SUBDIR to %USERPROFILE%/OneDrive/Documents/SUBDIR with robocopy . 
+            Backup //wsl.localhost/DISTRO/USERNAME/SUBDIR to %USERPROFILE%/OneDrive/Documents/SUBDIR with robocopy .
             set $ENV:BACKUP_WSL_SUBDIR to specify the subdir
 
         .EXAMPLE
@@ -29,13 +29,15 @@ Function Backup-WSL(){
     if ($LASTEXITCODE -ne 0){
         $message = "wsl command missing"
         Write-EventLog  -LogName Application -Source "Backup-WSL" -EventID 3001 -Message $message
-        exit 
+        exit
     }
     $src=[string](Join-Path "\\wsl.localhost" $wslDistro "home" $wslUser $subDir)
     $dest=[string](Join-Path ${env:OneDrive} "Documents\${subDir}")
     Write-EventLog  -LogName Application -Source "Backup-WSL" -EventID 3001 -Message "Starting Backup"
     $t0=(Get-Date)
-    $roboOptions = @( '/W:1','/R:0', '/E', '/xd', 'node_modules' , '/NFL', "/LOG+:${logfile}")
+    $roboOptions = @( '/W:1','/R:0', '/E',
+        '/xd', "node_modules", "venv", "test_venv", "bin", "dist" ,
+        '/NFL', "/LOG+:${logfile}")
     robocopy $src $dest $roboOptions
     $exitcoderobo=$LASTEXITCODE
     $t1=(Get-Date)
@@ -48,6 +50,23 @@ Function Backup-WSL(){
     exit $exitcoderobo
 }
 
+Function Measure-Folders(){
+    $excludedFolders = @("node_modules", "venv", "test_venv", "bin", "dist")
+    $results = foreach ($folderName in $excludedFolders) {
+        Get-ChildItem -Path "." -Recurse -Directory -Filter $folderName | ForEach-Object {
+            $size = (Get-ChildItem $_.FullName -Recurse -File | Measure-Object -Property Length -Sum).Sum
+            [PSCustomObject]@{
+                FolderName = $_.FullName
+                SizeMB     = [Math]::Round($size / 1MB, 2)
+            }
+        }
+    }
+
+    $results | Format-Table -AutoSize
+    $totalGB = [Math]::Round(($results.SizeMB | Measure-Object -Sum).Sum / 1KB, 2)
+    Write-Host "Total space to be reclaimed: $totalGB GB" -ForegroundColor Cyan
+}
+
 Function Install-BackupWSL{
      <#
         .SYNOPSIS
@@ -58,7 +77,7 @@ Function Install-BackupWSL{
 
         .EXAMPLE
             Install-BackupWSL
-            
+
         .OUTPUTS
             None
     #>

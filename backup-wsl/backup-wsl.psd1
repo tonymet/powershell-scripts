@@ -8,68 +8,68 @@
 
 @{
 
-# Script module or binary module file associated with this manifest.
-RootModule = '.\backup-wsl'
+    # Script module or binary module file associated with this manifest.
+    RootModule           = '.\backup-wsl'
 
-# Version number of this module.
-ModuleVersion = '0.0.3'
+    # Version number of this module.
+    ModuleVersion        = '0.0.3'
 
-# Supported PSEditions
-# CompatiblePSEditions = @()
+    # Supported PSEditions
+    # CompatiblePSEditions = @()
 
-# ID used to uniquely identify this module
-GUID = '448315ca-510a-4236-b480-d698154a36cb'
+    # ID used to uniquely identify this module
+    GUID                 = '448315ca-510a-4236-b480-d698154a36cb'
 
-# Author of this module
-Author = 'tonymet'
+    # Author of this module
+    Author               = 'tonymet'
 
-# Company or vendor of this module
-CompanyName = 'tonymet'
+    # Company or vendor of this module
+    CompanyName          = 'tonymet'
 
-# Copyright statement for this module
-Copyright = '(c) tonymet. All rights reserved.'
+    # Copyright statement for this module
+    Copyright            = '(c) tonymet. All rights reserved.'
 
-# Description of the functionality provided by this module
-Description = 'Backup WSL to Onedrive using Robocopy, Daily Scheduled Task'
+    # Description of the functionality provided by this module
+    Description          = 'Backup WSL to Onedrive using Robocopy, Daily Scheduled Task'
 
-# Minimum version of the PowerShell engine required by this module
-PowerShellVersion = '5.1'
+    # Minimum version of the PowerShell engine required by this module
+    PowerShellVersion    = '5.1'
 
-#FunctionsToExport = @()
-FunctionsToExport = @('Backup-WSL', 'Install-BackupWSL', 'Get-BackupWSLEvent', 'Build-BackupWSLSignature', 'Measure-Folders')
-#CmdletsToExport = @('Backup-WSL', 'Install-BackupWSL', 'Build-BackupWSLSignature')
-VariablesToExport = @()
-AliasesToExport = @()
-DscResourcesToExport = @()
-ModuleList = @()
-FileList = @('backup-wsl.psd1', 'backup-wsl.psm1')
+    #FunctionsToExport = @()
+    FunctionsToExport    = @('Backup-WSL', 'Install-BackupWSL', 'Get-BackupWSLEvent', 'Build-BackupWSLSignature', 'Measure-Folders', 'Get-WSLDiskInfo')
+    #CmdletsToExport = @('Backup-WSL', 'Install-BackupWSL', 'Build-BackupWSLSignature')
+    VariablesToExport    = @()
+    AliasesToExport      = @()
+    DscResourcesToExport = @()
+    ModuleList           = @()
+    FileList             = @('backup-wsl.psd1', 'backup-wsl.psm1')
 
-# Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
+    # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 
-PrivateData = @{
+    PrivateData          = @{
 
-    PSData = @{
-        Tags = @(
-            'wsl'
-            'linux'
-            'robocopy'
-            'scheduled'
-            'scheduler'
-            'taskscheduler'
-            'scheduledtasks'
-            'tasks'
-            'events'
-        )
-        LicenseUri = 'https://github.com/tonymet/powershell-scripts/blob/master/LICENSE'
-        ProjectUri = 'https://github.com/tonymet/powershell-scripts/tree/master/backup-wsl'
-        IconUri    = 'https://raw.githubusercontent.com/PSModule/Fonts/main/icon/icon.png'
+        PSData = @{
+            Tags       = @(
+                'wsl'
+                'linux'
+                'robocopy'
+                'scheduled'
+                'scheduler'
+                'taskscheduler'
+                'scheduledtasks'
+                'tasks'
+                'events'
+            )
+            LicenseUri = 'https://github.com/tonymet/powershell-scripts/blob/master/LICENSE'
+            ProjectUri = 'https://github.com/tonymet/powershell-scripts/tree/master/backup-wsl'
+            IconUri    = 'https://raw.githubusercontent.com/PSModule/Fonts/main/icon/icon.png'
+        }
     }
-}
-# HelpInfo URI of this module
-# HelpInfoURI = ''
+    # HelpInfo URI of this module
+    # HelpInfoURI = ''
 
-# Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
-# DefaultCommandPrefix = ''
+    # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
+    # DefaultCommandPrefix = ''
 
 }
 

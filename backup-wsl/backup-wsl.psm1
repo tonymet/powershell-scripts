@@ -1,6 +1,6 @@
-$ModuleName="Backup-WSL"
-$env:WSL_UTF8=1
-Function Backup-WSL(){
+$ModuleName = "Backup-WSL"
+$env:WSL_UTF8 = 1
+Function Backup-WSL() {
     <#
         .SYNOPSIS
             Backup //wsl.localhost/DISTRO/USERNAME/SUBDIR to %USERPROFILE%/OneDrive/Documents/SUBDIR with robocopy .
@@ -19,38 +19,38 @@ Function Backup-WSL(){
         .OUTPUTS
             see %USERPROFILE%\backup-wsl.log.txt
     #>
-    $logfile="$HOME\backup-wsl.log.txt"
-    if ((Get-Item $logfile).length -gt 1280000){
+    $logfile = "$HOME\backup-wsl.log.txt"
+    if ((Get-Item $logfile).length -gt 1280000) {
         Remove-Item $logfile
     }
     $subDir = [string]($env:BACKUP_WSL_SUBDIR ?? "sotion")
-    $wslUser=[string](wsl whoami)
-    $wslDistro=[string](wsl --list -q | Select-Object -first 1)
-    if ($LASTEXITCODE -ne 0){
+    $wslUser = [string](wsl whoami)
+    $wslDistro = [string](wsl --list -q | Select-Object -first 1)
+    if ($LASTEXITCODE -ne 0) {
         $message = "wsl command missing"
         Write-EventLog  -LogName Application -Source "Backup-WSL" -EventID 3001 -Message $message
         exit
     }
-    $src=[string](Join-Path "\\wsl.localhost" $wslDistro "home" $wslUser $subDir)
-    $dest=[string](Join-Path ${env:OneDrive} "Documents\${subDir}")
+    $src = [string](Join-Path "\\wsl.localhost" $wslDistro "home" $wslUser $subDir)
+    $dest = [string](Join-Path ${env:OneDrive} "Documents\${subDir}")
     Write-EventLog  -LogName Application -Source "Backup-WSL" -EventID 3001 -Message "Starting Backup"
-    $t0=(Get-Date)
-    $roboOptions = @( '/W:1','/R:0', '/E',
+    $t0 = (Get-Date)
+    $roboOptions = @( '/W:1', '/R:0', '/E',
         '/xd', "node_modules", "venv", "test_venv", "bin", "dist" ,
         '/NFL', "/LOG+:${logfile}")
     robocopy $src $dest $roboOptions
-    $exitcoderobo=$LASTEXITCODE
-    $t1=(Get-Date)
-    $delta =($t1-$t0)
-    $message="Finished Backup. Duration = $delta"
-    if($exitcoderobo -ne 0){
-        $message="ERROR: Finished Backup. Backup failed. Duration = $delta . Check $logfile for error"
+    $exitcoderobo = $LASTEXITCODE
+    $t1 = (Get-Date)
+    $delta = ($t1 - $t0)
+    $message = "Finished Backup. Duration = $delta"
+    if ($exitcoderobo -ne 0) {
+        $message = "ERROR: Finished Backup. Backup failed. Duration = $delta . Check $logfile for error"
     }
     Write-EventLog  -LogName Application -Source "Backup-WSL" -EventID 3001 -Message $message
     exit $exitcoderobo
 }
 
-Function Measure-Folders(){
+Function Measure-Folders() {
     $excludedFolders = @("node_modules", "venv", "test_venv", "bin", "dist")
     $results = foreach ($folderName in $excludedFolders) {
         Get-ChildItem -Path "." -Recurse -Directory -Filter $folderName | ForEach-Object {
@@ -67,8 +67,37 @@ Function Measure-Folders(){
     Write-Host "Total space to be reclaimed: $totalGB GB" -ForegroundColor Cyan
 }
 
-Function Install-BackupWSL{
-     <#
+Function Get-WSLDiskInfo() {
+    # 1. Define the explicit Docker VHDX path
+    $dockerPath = "$env:LOCALAPPDATA\Docker\wsl\disk\docker_data.vhdx"
+
+    # 2. Retrieve WSL base directories from the Registry
+    # The 'BasePath' value in the registry points to the folder containing the vhdx
+    $wslBaseDirs = Get-ChildItem "HKCU:\Software\Microsoft\Windows\CurrentVersion\Lxss" | 
+    Get-ItemProperty | 
+    ForEach-Object { $_.BasePath -replace '^\\\\\?\\', '' }
+
+    # 3. Combine both sources into a single array of search paths
+    $searchPaths = @($dockerPath) + $wslBaseDirs
+
+    # 4. Locate all .vhdx files and calculate sizes
+    $results = $searchPaths | ForEach-Object {
+        if (Test-Path $_) {
+            # Search recursively if the path is a directory; get item if it is a file
+            Get-ChildItem -Path $_ -Filter "*.vhdx" -Recurse -ErrorAction SilentlyContinue
+        }
+    } | Select-Object `
+        FullName, 
+    @{Name = "Size_GB"; Expression = { [math]::Round($_.Length / 1GB, 2) } },
+    @{Name = "Size_MB"; Expression = { [math]::Round($_.Length / 1MB, 2) } }
+
+    # 5. Output the results to the console
+    $results | Sort-Object Size_GB -Descending | Format-Table -AutoSize
+
+}
+
+Function Install-BackupWSL {
+    <#
         .SYNOPSIS
             Install scheduled task 2pm daily
 
@@ -89,7 +118,7 @@ Function Install-BackupWSL{
     Register-ScheduledTask -TaskName "Backup-WSL" -Trigger $Time -User $User -Action $action
 }
 Function Get-BackupWSLEvent {
-     <#
+    <#
         .SYNOPSIS
             Lists latest BackupWSL events from Windows Event Log
 
@@ -108,9 +137,9 @@ Function Get-BackupWSLEvent {
 
 Function Build-BackupWSLSignature {
     $cert = Get-ChildItem Cert:\CurrentUser\My -CodeSigningCert |
-        Select-Object -First 1
+    Select-Object -First 1
 
-    "backup-wsl.psd1","backup-wsl.psm1" | Foreach-Object {
+    "backup-wsl.psd1", "backup-wsl.psm1" | Foreach-Object {
         Set-AuthenticodeSignature -File $_ -Certificate $cert
     }
 }

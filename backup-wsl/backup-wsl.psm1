@@ -3,6 +3,26 @@ $env:WSL_UTF8 = 1
 Function Backup-WSL() {
     <#
         .SYNOPSIS
+            Orchestrates both file and repository backups.
+        .DESCRIPTION
+            Calls Backup-WSLFiles to sync files with OneDrive and Backup-Repos to push git repositories to gcloud.
+    #>
+    $fileExitCode = Backup-WSLFiles
+    $repoExitCode = Backup-Repos
+    
+    # Prioritize file backup exit code if it's an error (Robocopy error codes >= 8)
+    # But if it's 0-7 (success/minor issues), and repo fails (non-zero), use that.
+    $finalExitCode = $fileExitCode
+    if ($fileExitCode -lt 8 -and $repoExitCode -ne 0) {
+        $finalExitCode = $repoExitCode
+    }
+    
+    exit $finalExitCode
+}
+
+Function Backup-WSLFiles() {
+    <#
+        .SYNOPSIS
             Backup //wsl.localhost/DISTRO/USERNAME/SUBDIR to %USERPROFILE%/OneDrive/Documents/SUBDIR with robocopy .
             set $ENV:BACKUP_WSL_SUBDIR to specify the subdir
 
@@ -11,17 +31,19 @@ Function Backup-WSL() {
             set $ENV:BACKUP_WSL_SUBDIR to specify the subdir
 
         .EXAMPLE
-            Backup-WSL
+            Backup-WSLFiles
         .EXAMPLE
             # full command to trigger from .bat or Scheduled Task
-            pwsh -C "Import-Module $HOME\scripts\backup-wsl && Backup-WSL"
+            pwsh -C "Import-Module $HOME\scripts\backup-wsl && Backup-WSLFiles"
 
         .OUTPUTS
             see %USERPROFILE%\backup-wsl.log.txt
     #>
     $logfile = "$HOME\backup-wsl.log.txt"
-    if ((Get-Item $logfile).length -gt 1280000) {
-        Remove-Item $logfile
+    if (Test-Path $logfile) {
+        if ((Get-Item $logfile).length -gt 1280000) {
+            Remove-Item $logfile
+        }
     }
     $subDir = [string]($env:BACKUP_WSL_SUBDIR ?? "sotion")
     $wslUser = [string](wsl whoami)
@@ -29,7 +51,7 @@ Function Backup-WSL() {
     if ($LASTEXITCODE -ne 0) {
         $message = "wsl command missing"
         Write-EventLog  -LogName Application -Source "Backup-WSL" -EventID 3001 -Message $message
-        exit
+        return
     }
     $src = [string](Join-Path "\\wsl.localhost" $wslDistro "home" $wslUser $subDir)
     $dest = [string](Join-Path ${env:OneDrive} "Documents\${subDir}")
@@ -47,7 +69,50 @@ Function Backup-WSL() {
         $message = "ERROR: Finished Backup. Backup failed. Duration = $delta . Check $logfile for error"
     }
     Write-EventLog  -LogName Application -Source "Backup-WSL" -EventID 3001 -Message $message
-    exit $exitcoderobo
+    return $exitcoderobo
+}
+
+Function Backup-Repos() {
+    <#
+        .SYNOPSIS
+            Pushes git repositories to "gcloud" remote.
+        .DESCRIPTION
+            Iterates over a list of git repositories and pushes to "gcloud" remote.
+    #>
+    $repos = @(
+        "\\wsl.localhost\Debian\home\$env:USERNAME\sotion\sotion"
+    )
+
+    $allSuccess = $true
+    foreach ($repo in $repos) {
+        if (Test-Path $repo) {
+            Write-EventLog -LogName Application -Source "Backup-WSL" -EventID 3001 -Message "Pushing git repo $repo to gcloud"
+            Push-Location $repo
+            try {
+                # Pushing all branches to gcloud remote
+                git push gcloud --all
+                if ($LASTEXITCODE -eq 0) {
+                    Write-EventLog -LogName Application -Source "Backup-WSL" -EventID 3001 -Message "Successfully pushed $repo to gcloud"
+                }
+                else {
+                    Write-EventLog -LogName Application -Source "Backup-WSL" -EventID 3001 -Message "Failed to push $repo to gcloud. Exit code: $LASTEXITCODE"
+                    $allSuccess = $false
+                }
+            }
+            catch {
+                Write-EventLog -LogName Application -Source "Backup-WSL" -EventID 3001 -Message "Exception during git push for $(repo) : $($_.Exception.Message)"
+                $allSuccess = $false
+            }
+            finally {
+                Pop-Location
+            }
+        }
+        else {
+            Write-EventLog -LogName Application -Source "Backup-WSL" -EventID 3001 -Message "Git repo path not found: $repo"
+            $allSuccess = $false
+        }
+    }
+    return $allSuccess ? 0 : 1
 }
 
 Function Measure-Folders() {

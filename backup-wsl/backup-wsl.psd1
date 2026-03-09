@@ -36,7 +36,7 @@
     PowerShellVersion    = '5.1'
 
     #FunctionsToExport = @()
-    FunctionsToExport    = @('Backup-WSL', 'Install-BackupWSL', 'Get-BackupWSLEvent', 'Build-BackupWSLSignature', 'Measure-Folders', 'Get-WSLDiskInfo')
+    FunctionsToExport    = @('Backup-WSL', 'Install-BackupWSL', 'Get-BackupWSLEvent', 'Build-BackupWSLSignature', 'Measure-Folders', 'Get-WSLDiskInfo', 'Backup-Repos', 'Backup-WSLFiles')
     #CmdletsToExport = @('Backup-WSL', 'Install-BackupWSL', 'Build-BackupWSLSignature')
     VariablesToExport    = @()
     AliasesToExport      = @()
